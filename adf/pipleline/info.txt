@@ -1,0 +1,237 @@
+{
+    "name": "PL_Master_Insurance_Icremental",
+    "properties": {
+        "activities": [
+            {
+                "name": "NB_Generic_Bronze",
+                "type": "DatabricksNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Insurance_Project/bronze/Generic_Bronze_Loader_Final",
+                    "baseParameters": {
+                        "table_name": {
+                            "value": "@pipeline().parameters.table_name",
+                            "type": "Expression"
+                        },
+                        "pipeline_run_id": {
+                            "value": "@pipeline().RunId",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "DS_LS_Live",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "NB_Generic_Silver",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "NB_Generic_Bronze",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Insurance_Project/silver/:Clone) 03_Generic_Silver_Loader",
+                    "baseParameters": {
+                        "table_name": {
+                            "value": "@pipeline().parameters.table_name",
+                            "type": "Expression"
+                        },
+                        "pipeline_run_id": {
+                            "value": "@pipeline().RunId",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "DS_LS_Live",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "NB_Generic_Gold",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "NB_Generic_Silver",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Insurance_Project/gold/Clone) 04_Generic_Gold_Loader",
+                    "baseParameters": {
+                        "table_name": {
+                            "value": "@pipeline().parameters.table_name",
+                            "type": "Expression"
+                        },
+                        "pipeline_run_id": {
+                            "value": "@pipeline().RunId",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "DS_LS_Live",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "NB_Generic_SCD2",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "NB_Generic_Gold",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Insurance_Project/framework/Clone) 05_SCD2_Framework",
+                    "baseParameters": {
+                        "table_name": {
+                            "value": "@pipeline().parameters.table_name",
+                            "type": "Expression"
+                        },
+                        "pipeline_run_id": {
+                            "value": "@pipeline().RunId",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "DS_LS_Live",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "SET_Failed",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "NB_Generic_Bronze",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "NB_Generic_Silver",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "NB_Generic_Gold",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "NB_Generic_SCD2",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "status",
+                    "value": "FAILED"
+                }
+            },
+            {
+                "name": "SET_Success",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "NB_Generic_SCD2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "status",
+                    "value": "SUCCESS"
+                }
+            }
+        ],
+        "parameters": {
+            "pipeline_run_id": {
+                "type": "string",
+                "defaultValue": "@{guid()}"
+            },
+            "load_type": {
+                "type": "string",
+                "defaultValue": "FULL"
+            },
+            "table_name": {
+                "type": "string",
+                "defaultValue": "Customer"
+            }
+        },
+        "variables": {
+            "table_name": {
+                "type": "String"
+            },
+            "status": {
+                "type": "String"
+            },
+            "error_message": {
+                "type": "String"
+            }
+        },
+        "folder": {
+            "name": "Insurance ADF"
+        },
+        "annotations": []
+    }
+}
