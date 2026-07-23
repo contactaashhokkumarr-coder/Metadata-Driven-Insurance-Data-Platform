@@ -1,0 +1,21 @@
+customer_id,first_name,last_name,email,phone,country,city,registration_date,date_of_birth,gender
+1005,Edd,Diviny,ediviny4@list-manage.com,4059999999,United States,Dallas,14-08-2022 19.04,23-04-2022 15.11,Male
+1010,Rozella,Hebdon,rhebdon9@sun.com,7129809999,United States,Omaha,23-08-2022 08.29,13-02-2023 08.06,Female
+1025,Melonie,Buttwell,melonie.buttwell@gmail.com,5049042907,United States,New Orleans,01-11-2022 22.11,07-07-2022 07.48,Female
+1031,Denis,Shetliff,denis.shetliff@gmail.com,2291858888,United States,Atlanta,22-01-2023 03.34,02-10-2022 11.55,Male
+1044,Vivyanne,Karim,vkarim17@walmart.com,8176508301,Canada,Toronto,11-07-2022 04.02,22-11-2022 04.11,Female
+1108,Kevin,Richards,krichards@gmail.com,6475551108,Canada,Toronto,16-07-2026 09.15,14-02-1993 08.10,Male
+1109,Emma,Watson,emma.watson@gmail.com,4165551109,Canada,Ottawa,16-07-2026 09.30,09-08-1995 12.20,Female
+1110,Rahul,Sharma,rahul.sharma@gmail.com,9876543210,India,Chennai,16-07-2026 10.15,22-06-1996 15.40,Male
+1111,Priya,Iyer,priya.iyer@gmail.com,9123456789,India,Bengaluru,16-07-2026 10.30,12-11-1997 16.25,Female
+1112,David,Miller,david.miller@gmail.com,2125551112,United States,New York,16-07-2026 11.10,17-03-1990 09.40,Male
+1113,Sophia,Turner,sophia.turner@gmail.com,3105551113,United States,Los Angeles,16-07-2026 11.25,25-01-1992 10.55,Female
+1114,Michael,Brown,michael.brown@gmail.com,3055551114,United States,Miami,16-07-2026 11.40,15-07-1991 07.20,Male
+1115,Olivia,Wilson,olivia.wilson@gmail.com,6045551115,Canada,Vancouver,16-07-2026 12.05,18-05-1994 11.30,Female
+1116,Noah,Davis,noah.davis@gmail.com,7135551116,United States,Houston,16-07-2026 12.20,09-09-1993 06.15,Male
+1117,Ava,Thomas,ava.thomas@gmail.com,4035551117,Canada,Calgary,16-07-2026 12.45,20-12-1996 13.10,Female
+1118,Liam,Martin,liam.martin@gmail.com,5145551118,Canada,Montreal,16-07-2026 13.05,02-04-1995 09.55,Male
+1118,Liam,Martin,liam.martin@gmail.com,5145551118,Canada,Montreal,16-07-2026 13.05,02-04-1995 09.55,Male
+,Fake,Customer,fake.customer@gmail.com,9999999999,United States,Seattle,16-07-2026 13.20,01-01-1990 01.00,Male
+1119,Grace,Hall,,4085551119,United States,San Jose,16-07-2026 13.35,07-07-1998 08.45,Female
+1120,Ethan,Young,ethan.young@gmail.com,7025551120,United States,,16-07-2026 13.50,19-10-1992 14.20,Male

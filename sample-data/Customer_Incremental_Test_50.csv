@@ -1,0 +1,53 @@
+customer_id,first_name,last_name,email,phone,country,city,registration_date,date_of_birth,gender
+1005,Edd,Diviny,ediviny4@list-manage.com,4059999999,United States,Dallas,2022-08-14 19:04:00,2022-04-23 15:11:00,Male
+1010,Rozella,Hebdon,rhebdon9@sun.com,7129809999,United States,Omaha,2022-08-23 08:29:00,2023-02-13 08:06:00,Female
+1025,Melonie,Buttwell,melonie.buttwell@gmail.com,5049042907,United States,New Orleans,2022-11-01 22:11:00,2022-07-07 07:48:00,Female
+1031,Denis,Shetliff,denis.shetliff@gmail.com,2291858888,United States,Atlanta,2023-01-22 03:34:00,2022-10-02 11:55:00,Male
+1044,Vivyanne,Karim,vkarim17@walmart.com,8176508301,Canada,Toronto,2022-07-11 04:02:00,2022-11-22 04:11:00,Female
+1108,Test1108,User1108,test1108@example.com,555001108,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1109,Test1109,User1109,test1109@example.com,555001109,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1110,Test1110,User1110,test1110@example.com,555001110,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1111,Test1111,User1111,test1111@example.com,555001111,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1112,Test1112,User1112,test1112@example.com,555001112,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1113,Test1113,User1113,test1113@example.com,555001113,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1114,Test1114,User1114,test1114@example.com,555001114,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1115,Test1115,User1115,test1115@example.com,555001115,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1116,Test1116,User1116,test1116@example.com,555001116,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1117,Test1117,User1117,test1117@example.com,555001117,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1118,Test1118,User1118,test1118@example.com,555001118,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1119,Test1119,User1119,test1119@example.com,555001119,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1120,Test1120,User1120,test1120@example.com,555001120,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1121,Test1121,User1121,test1121@example.com,555001121,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1122,Test1122,User1122,test1122@example.com,555001122,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1123,Test1123,User1123,test1123@example.com,555001123,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1124,Test1124,User1124,test1124@example.com,555001124,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1125,Test1125,User1125,test1125@example.com,555001125,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1126,Test1126,User1126,test1126@example.com,555001126,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1127,Test1127,User1127,test1127@example.com,555001127,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1128,Test1128,User1128,test1128@example.com,555001128,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1129,Test1129,User1129,test1129@example.com,555001129,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1130,Test1130,User1130,test1130@example.com,555001130,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1131,Test1131,User1131,test1131@example.com,555001131,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1132,Test1132,User1132,test1132@example.com,555001132,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1133,Test1133,User1133,test1133@example.com,555001133,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1134,Test1134,User1134,test1134@example.com,555001134,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1135,Test1135,User1135,test1135@example.com,555001135,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1136,Test1136,User1136,test1136@example.com,555001136,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1137,Test1137,User1137,test1137@example.com,555001137,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1138,Test1138,User1138,test1138@example.com,555001138,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1139,Test1139,User1139,test1139@example.com,555001139,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1140,Test1140,User1140,test1140@example.com,555001140,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1141,Test1141,User1141,test1141@example.com,555001141,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1142,Test1142,User1142,test1142@example.com,555001142,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1143,Test1143,User1143,test1143@example.com,555001143,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1144,Test1144,User1144,test1144@example.com,555001144,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1145,Test1145,User1145,test1145@example.com,555001145,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1146,Test1146,User1146,test1146@example.com,555001146,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1147,Test1147,User1147,test1147@example.com,555001147,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1148,Test1148,User1148,test1148@example.com,555001148,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1149,Test1149,User1149,test1149@example.com,555001149,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1150,Test1150,User1150,test1150@example.com,555001150,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1151,Test1151,User1151,test1151@example.com,555001151,United States,Chicago,2026-07-17 09:00:00,1995-01-01 10:00:00,Female
+1152,Test1152,User1152,test1152@example.com,555001152,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+1115,Test1115,User1115,test1115@example.com,5550011115,Canada,Toronto,2026-07-17 09:00:00,1995-01-01 10:00:00,Male
+,Null,Customer,null@example.com,9999999999,United States,Seattle,2026-07-17 09:00:00,1990-01-01 00:00:00,Female

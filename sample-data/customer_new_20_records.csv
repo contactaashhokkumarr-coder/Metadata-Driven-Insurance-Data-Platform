@@ -1,0 +1,21 @@
+customer_id,first_name,last_name,email,phone,country,city,registration_date,date_of_birth,gender
+2001.0,New1,Customer1,newcustomer1@example.com,7045889890.0,United States,,2022-11-06 13:44:24,2022-10-03 09:39:01,Female
+2002.0,New2,Customer2,newcustomer2@example.com,9162805864.0,United States,,2023-03-11 11:20:46,2023-04-01 23:15:35,Female
+2003.0,New3,Customer3,newcustomer3@example.com,9149758752.0,United States,,2022-08-01 20:16:41,2022-12-13 07:18:26,Male
+2004.0,New4,Customer4,newcustomer4@example.com,7419853028.0,United Kingdom,Norton,2022-05-14 01:24:04,2023-03-31 18:57:08,Female
+2005.0,New5,Customer5,newcustomer5@example.com,2175006634.0,United States,Springfield,,,
+2006.0,New6,Customer6,newcustomer6@example.com,4139216188.0,United States,Springfield,2022-12-18 02:45:43,2022-08-23 03:22:50,Male
+2007.0,New7,Customer7,newcustomer7@example.com,2026505954.0,United States,Washington,2022-04-28 09:18:48,2023-01-09 02:30:47,Male
+2008.0,New8,Customer8,newcustomer8@example.com,9183019500.0,United States,Tulsa,2022-12-12 09:57:17,2022-09-21 02:17:07,Male
+2009.0,New9,Customer9,newcustomer9@example.com,5197129047.0,United Kingdom,Liverpool,2022-10-04 01:32:14,2022-05-31 13:12:54,Female
+2010.0,New10,Customer10,newcustomer10@example.com,4193933006.0,United States,Toledo,2022-12-23 15:41:16,2023-02-08 23:03:34,Male
+2011.0,New11,Customer11,newcustomer11@example.com,8381868915.0,Australia,Sydney,2022-08-17 03:00:11,2023-04-02 01:15:10,Male
+2012.0,New12,Customer12,newcustomer12@example.com,9135176883.0,United States,Kansas City,2022-07-12 04:15:24,2022-06-07 01:11:28,Male
+2013.0,New13,Customer13,newcustomer13@example.com,3471236457.0,United States,Flushing,2023-02-09 01:40:15,2022-10-12 11:32:05,Male
+2014.0,New14,Customer14,newcustomer14@example.com,2132858150.0,United States,Los Angeles,2022-11-11 08:20:13,2022-05-12 02:31:20,Female
+2015.0,New15,Customer15,newcustomer15@example.com,7149149395.0,United States,Fresno,2022-11-13 04:34:23,2022-12-02 04:51:52,Male
+2016.0,New16,Customer16,newcustomer16@example.com,3479448040.0,United States,New York City,2022-12-15 22:37:47,2022-11-06 12:48:10,Female
+2017.0,New17,Customer17,newcustomer17@example.com,8632354131.0,United States,Largo,2022-12-09 23:08:51,2022-10-07 22:58:27,Female
+2018.0,New18,Customer18,newcustomer18@example.com,7049077550.0,United States,Charlotte,2023-03-01 00:15:46,2022-08-02 01:38:26,Female
+2019.0,New19,Customer19,newcustomer19@example.com,7706510514.0,United States,Atlanta,,,
+2020.0,New20,Customer20,newcustomer20@example.com,8068431952.0,United States,Lubbock,2022-11-24 05:26:13,2022-06-30 03:56:11,Female
