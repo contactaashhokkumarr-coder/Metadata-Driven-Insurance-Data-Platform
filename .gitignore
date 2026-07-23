@@ -1,0 +1,15 @@
+# Ignore Databricks clone notebooks containing secrets
+(Clone) *.ipynb
+
+# Environment files
+.env
+
+# Azure credentials
+*.key
+*.pem
+
+# Temporary files
+*.tmp
+
+# Python cache
+__pycache__/
