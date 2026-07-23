@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "value": "ADF-Insurance-Dev3"
+        },
+        "DS_LS_Live_accessToken": {
+            "value": ""
+        },
+        "LS_ADLS_accountKey": {
+            "value": ""
+        },
+        "LS_AzureSQL_password": {
+            "value": ""
+        },
+        "LS_Databricks_accessToken": {
+            "value": ""
+        },
+        "DS_LS_Live_properties_typeProperties_existingClusterId": {
+            "value": "0717-080219-r8dixgo2"
+        },
+        "LS_ADLS_properties_typeProperties_url": {
+            "value": "https://adlsinsurancedev.dfs.core.windows.net/"
+        },
+        "LS_AzureSQL_properties_typeProperties_server": {
+            "value": "insurancedev.database.windows.net"
+        },
+        "LS_AzureSQL_properties_typeProperties_database": {
+            "value": "SQL-Insurance-Dev"
+        },
+        "LS_AzureSQL_properties_typeProperties_userName": {
+            "value": "insuranceSql"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+            "value": "01"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+            "value": "manual"
+        },
+        "containerUri": {
+            "value": ""
+        },
+        "containerSasToken": {
+            "value": ""
+        }
+    }
+}

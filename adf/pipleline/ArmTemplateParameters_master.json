@@ -1,0 +1,119 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "ADF-Insurance-Dev3"
+        },
+        "DS_LS_Live_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'DS_LS_Live'"
+        },
+        "LS_ADLS_accountKey": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
+        },
+        "LS_AzureSQL_password": {
+            "type": "secureString",
+            "metadata": "Secure string for 'password' of 'LS_AzureSQL'"
+        },
+        "LS_Databricks_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'LS_Databricks'"
+        },
+        "DS_LS_Live_properties_typeProperties_existingClusterId": {
+            "type": "string",
+            "defaultValue": "0717-080219-r8dixgo2"
+        },
+        "LS_ADLS_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://adlsinsurancedev.dfs.core.windows.net/"
+        },
+        "LS_AzureSQL_properties_typeProperties_server": {
+            "type": "string",
+            "defaultValue": "insurancedev.database.windows.net"
+        },
+        "LS_AzureSQL_properties_typeProperties_database": {
+            "type": "string",
+            "defaultValue": "SQL-Insurance-Dev"
+        },
+        "LS_AzureSQL_properties_typeProperties_userName": {
+            "type": "string",
+            "defaultValue": "insuranceSql"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+            "type": "string",
+            "defaultValue": "01"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+            "type": "string",
+            "defaultValue": "manual"
+        },
+        "containerUri": {
+            "type": "string",
+            "metadata": "URI to storage account containing linked ARM templates"
+        },
+        "containerSasToken": {
+            "type": "string",
+            "metadata": "Sas token to storage account containing linked ARM templates"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "ADF-Insurance-Dev3_ArmTemplate_0",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2024-03-01",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "factoryName": {
+                        "value": "[parameters('factoryName')]"
+                    },
+                    "DS_LS_Live_accessToken": {
+                        "value": "[parameters('DS_LS_Live_accessToken')]"
+                    },
+                    "LS_ADLS_accountKey": {
+                        "value": "[parameters('LS_ADLS_accountKey')]"
+                    },
+                    "LS_AzureSQL_password": {
+                        "value": "[parameters('LS_AzureSQL_password')]"
+                    },
+                    "LS_Databricks_accessToken": {
+                        "value": "[parameters('LS_Databricks_accessToken')]"
+                    },
+                    "DS_LS_Live_properties_typeProperties_existingClusterId": {
+                        "value": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
+                    },
+                    "LS_ADLS_properties_typeProperties_url": {
+                        "value": "[parameters('LS_ADLS_properties_typeProperties_url')]"
+                    },
+                    "LS_AzureSQL_properties_typeProperties_server": {
+                        "value": "[parameters('LS_AzureSQL_properties_typeProperties_server')]"
+                    },
+                    "LS_AzureSQL_properties_typeProperties_database": {
+                        "value": "[parameters('LS_AzureSQL_properties_typeProperties_database')]"
+                    },
+                    "LS_AzureSQL_properties_typeProperties_userName": {
+                        "value": "[parameters('LS_AzureSQL_properties_typeProperties_userName')]"
+                    },
+                    "Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+                        "value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]"
+                    },
+                    "Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+                        "value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

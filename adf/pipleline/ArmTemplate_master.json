@@ -1,0 +1,792 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "ADF-Insurance-Dev3"
+        },
+        "DS_LS_Live_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'DS_LS_Live'"
+        },
+        "LS_ADLS_accountKey": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
+        },
+        "LS_AzureSQL_password": {
+            "type": "secureString",
+            "metadata": "Secure string for 'password' of 'LS_AzureSQL'"
+        },
+        "LS_Databricks_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'LS_Databricks'"
+        },
+        "DS_LS_Live_properties_typeProperties_existingClusterId": {
+            "type": "string",
+            "defaultValue": "0717-080219-r8dixgo2"
+        },
+        "LS_ADLS_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://adlsinsurancedev.dfs.core.windows.net/"
+        },
+        "LS_AzureSQL_properties_typeProperties_server": {
+            "type": "string",
+            "defaultValue": "insurancedev.database.windows.net"
+        },
+        "LS_AzureSQL_properties_typeProperties_database": {
+            "type": "string",
+            "defaultValue": "SQL-Insurance-Dev"
+        },
+        "LS_AzureSQL_properties_typeProperties_userName": {
+            "type": "string",
+            "defaultValue": "insuranceSql"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+            "type": "string",
+            "defaultValue": "01"
+        },
+        "Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+            "type": "string",
+            "defaultValue": "manual"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_LS_Live')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureDatabricks",
+                "typeProperties": {
+                    "domain": "https://adb-7405607402357402.2.azuredatabricks.net/",
+                    "accessToken": {
+                        "type": "SecureString",
+                        "value": "[parameters('DS_LS_Live_accessToken')]"
+                    },
+                    "existingClusterId": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_ADLS')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('LS_ADLS_properties_typeProperties_url')]",
+                    "accountKey": {
+                        "type": "SecureString",
+                        "value": "[parameters('LS_ADLS_accountKey')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_AzureSQL')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "server": "[parameters('LS_AzureSQL_properties_typeProperties_server')]",
+                    "database": "[parameters('LS_AzureSQL_properties_typeProperties_database')]",
+                    "encrypt": "mandatory",
+                    "trustServerCertificate": false,
+                    "authenticationType": "SQL",
+                    "userName": "[parameters('LS_AzureSQL_properties_typeProperties_userName')]",
+                    "password": {
+                        "type": "SecureString",
+                        "value": "[parameters('LS_AzureSQL_password')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_Databricks')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureDatabricksDeltaLake",
+                "typeProperties": {
+                    "domain": "https://adb-7405606931601845.5.azuredatabricks.net",
+                    "clusterId": "0704-150842-6mvrfbtu",
+                    "accessToken": {
+                        "type": "SecureString",
+                        "value": "[parameters('LS_Databricks_accessToken')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_Master_Insurance')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "NB_Generic_Bronze",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/InsuranceProject/bronze/01_Generic_Bronze_Loader",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_Silver",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Bronze",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/InsuranceProject/silver/03_Generic_Silver_Loader",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_Gold",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Silver",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/InsuranceProject/gold/04_Generic_Gold_Loader",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_SCD2",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Gold",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/InsuranceProject/framework/05_SCD2_Framework",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "SET_Failed",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Bronze",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_Silver",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_Gold",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_SCD2",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "status",
+                            "value": "FAILED"
+                        }
+                    },
+                    {
+                        "name": "SET_Success",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_SCD2",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "status",
+                            "value": "SUCCESS"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {}
+                },
+                "parameters": {
+                    "pipeline_run_id": {
+                        "type": "string",
+                        "defaultValue": "@{guid()}"
+                    },
+                    "load_type": {
+                        "type": "string",
+                        "defaultValue": "FULL"
+                    },
+                    "table_name": {
+                        "type": "string",
+                        "defaultValue": "Customer"
+                    }
+                },
+                "variables": {
+                    "table_name": {
+                        "type": "String"
+                    },
+                    "status": {
+                        "type": "String"
+                    },
+                    "error_message": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "Insurance ADF"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/DS_LS_Live')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_Master_Insurance_Icremental')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "NB_Generic_Bronze",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/Insurance_Project/bronze/Generic_Bronze_Loader_Final",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_Silver",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Bronze",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/Insurance_Project/silver/:Clone) 03_Generic_Silver_Loader",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_Gold",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Silver",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/Insurance_Project/gold/Clone) 04_Generic_Gold_Loader",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "NB_Generic_SCD2",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Gold",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/Insurance_Project/framework/Clone) 05_SCD2_Framework",
+                            "baseParameters": {
+                                "table_name": {
+                                    "value": "@pipeline().parameters.table_name",
+                                    "type": "Expression"
+                                },
+                                "pipeline_run_id": {
+                                    "value": "@pipeline().RunId",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "DS_LS_Live",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "SET_Failed",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_Bronze",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_Silver",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_Gold",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            },
+                            {
+                                "activity": "NB_Generic_SCD2",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "status",
+                            "value": "FAILED"
+                        }
+                    },
+                    {
+                        "name": "SET_Success",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "NB_Generic_SCD2",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "status",
+                            "value": "SUCCESS"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {}
+                },
+                "parameters": {
+                    "pipeline_run_id": {
+                        "type": "string",
+                        "defaultValue": "@{guid()}"
+                    },
+                    "load_type": {
+                        "type": "string",
+                        "defaultValue": "FULL"
+                    },
+                    "table_name": {
+                        "type": "string",
+                        "defaultValue": "Customer"
+                    }
+                },
+                "variables": {
+                    "table_name": {
+                        "type": "String"
+                    },
+                    "status": {
+                        "type": "String"
+                    },
+                    "error_message": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "Insurance ADF"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/DS_LS_Live')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_Customer_CSV')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_ADLS",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "Customer-acMVLthHdA.csv",
+                        "folderPath": "customer",
+                        "fileSystem": "landing"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "customer_id",
+                        "type": "String"
+                    },
+                    {
+                        "name": "first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "last_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "email",
+                        "type": "String"
+                    },
+                    {
+                        "name": "phone",
+                        "type": "String"
+                    },
+                    {
+                        "name": "country",
+                        "type": "String"
+                    },
+                    {
+                        "name": "city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "registration_date",
+                        "type": "String"
+                    },
+                    {
+                        "name": "date_of_birth",
+                        "type": "String"
+                    },
+                    {
+                        "name": "gender",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_ADLS')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_SQL_Customer')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_AzureSQL",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "customer_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "first_name",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "last_name",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "email",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "phone",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "country",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "city",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "registration_date",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "date_of_birth",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "gender",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Customer"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_AzureSQL')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Manual01')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "PL_Master_Insurance",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {
+                            "pipeline_run_id": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]",
+                            "load_type": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
+                        }
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Day",
+                        "interval": 1,
+                        "startTime": "2026-07-10T20:30:00",
+                        "endTime": "2026-07-11T14:53:00",
+                        "timeZone": "India Standard Time"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/PL_Master_Insurance')]"
+            ]
+        }
+    ]
+}
