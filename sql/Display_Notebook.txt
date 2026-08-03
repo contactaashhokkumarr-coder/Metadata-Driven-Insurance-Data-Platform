@@ -1,0 +1,100 @@
+e11e728cf2a94ccf7d13ea90b2d5bf64_DisplayNotebook
+
+insurance_metadata schema (2 tables)
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_metadata.bronze_config;
+
+  createtab_stmt
+  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_metadata.bronze_config ( table_name STRING, source_folder STRING, target_table STRING, gold_table STRING, history_table STRING, file_format STRING, load_strategy STRING, primary_key STRING, source_system STRING, watermark_column STRING, compare_columns STRING, scd_enabled STRING, active STRING) USING delta COMMENT 'The table contains configuration details for data processing related to insurance datasets. Each entry includes information about the source folder, target table, and associated metadata such as file format and load strategy. This data can be utilized for understanding data flows, managing data pipelines, and monitoring the status of various historical and active tables.' TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.enableRowTracking' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.domainMetadata' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.feature.rowTracking' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_metadata.pipeline_watermark;
+
+  createtab_stmt
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_metadata.pipeline_watermark ( table_name STRING, last_watermark TIMESTAMP) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.enableRowTracking' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.domainMetadata' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.feature.rowTracking' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+insurance_audit schema
+
+In [0]:
+
+    %sql
+    SELECT *
+    FROM dbw_insurance.insurance_audit.pipeline_audit
+    ORDER BY end_time DESC LIMIT 20 ;
+
+  pipeline_name                         table_name                                  load_type     start_time                    end_time                      rows_read   rows_written   status    error_message   pipeline_run_id
+  ------------------------------------- ------------------------------------------- ------------- ----------------------------- ----------------------------- ----------- -------------- --------- --------------- --------------------------------------
+  Enterprise_Generic_SCD2_Loader_v4     dim_customer_history                        SCD2          2026-07-31T15:28:59.002127Z   2026-07-31T15:28:59.002127Z   925         0              SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_SCD2_Loader_v4     dim_branch_history                          SCD2          2026-07-31T15:28:52.673743Z   2026-07-31T15:28:52.673743Z   1000        0              SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_SCD2_Loader_v4     dim_agent_history                           SCD2          2026-07-31T15:28:46.558886Z   2026-07-31T15:28:46.558886Z   1005        0              SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Gold_Loader_v4     dbw_insurance.insurance_gold.dim_policy     FULL          2026-07-31T15:27:59.682118Z   2026-07-31T15:27:59.682118Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Gold_Loader_v4     dbw_insurance.insurance_gold.dim_customer   INCREMENTAL   2026-07-31T15:27:54.698378Z   2026-07-31T15:27:54.698378Z   925         925            SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Gold_Loader_v4     dbw_insurance.insurance_gold.fact_claim     INCREMENTAL   2026-07-31T15:27:47.819179Z   2026-07-31T15:27:47.819179Z   943         943            SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Gold_Loader_v4     dbw_insurance.insurance_gold.dim_branch     FULL          2026-07-31T15:27:41.528625Z   2026-07-31T15:27:41.528625Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Gold_Loader_v4     dbw_insurance.insurance_gold.dim_agent      FULL          2026-07-31T15:27:34.581813Z   2026-07-31T15:27:34.581813Z   1005        1005           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Silver_Loader_v4   policy                                      FULL          2026-07-31T15:26:46.773643Z   2026-07-31T15:26:46.773643Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Silver_Loader_v4   customer                                    INCREMENTAL   2026-07-31T15:26:38.228138Z   2026-07-31T15:26:38.228138Z   34170       925            SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Silver_Loader_v4   claim                                       INCREMENTAL   2026-07-31T15:26:30.428628Z   2026-07-31T15:26:30.428628Z   943         943            SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Silver_Loader_v4   branch                                      FULL          2026-07-31T15:26:23.764939Z   2026-07-31T15:26:23.764939Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Silver_Loader_v4   agent                                       FULL          2026-07-31T15:26:16.56423Z    2026-07-31T15:26:16.56423Z    2005        1005           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   policy                                      FULL          2026-07-31T15:25:27.708633Z   2026-07-31T15:25:27.708633Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   customer                                    INCREMENTAL   2026-07-31T15:25:15.609688Z   2026-07-31T15:25:15.609688Z   2010        0              SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   claim                                       INCREMENTAL   2026-07-31T15:25:04.591347Z   2026-07-31T15:25:04.591347Z   1000        0              SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   branch                                      FULL          2026-07-31T15:24:52.437343Z   2026-07-31T15:24:52.437343Z   1000        1000           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   agent                                       FULL          2026-07-31T15:24:42.602285Z   2026-07-31T15:24:42.602285Z   2005        2005           SUCCESS                   c15d3a57-711b-4bb9-8182-28956850d9ea
+  Enterprise_Generic_Bronze_Loader_v4   policy                                      FULL          2026-07-31T15:18:25.166932Z   2026-07-31T15:18:25.166932Z   1000        1000           SUCCESS                   
+  Enterprise_Generic_Bronze_Loader_v4   customer                                    INCREMENTAL   2026-07-31T15:18:14.122101Z   2026-07-31T15:18:14.122101Z   2010        0              SUCCESS                   
+
+insurance_bronze schema (5 tables)
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_bronze.agent;
+
+  createtab_stmt
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_bronze.agent ( agent_id INT, agent_name STRING, agent_email STRING, agent_phone BIGINT, branch_id INT, create_timestamp STRING, ingestion_timestamp TIMESTAMP, source_file_name STRING, pipeline_run_id STRING, load_id STRING, source_system STRING) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_bronze.branch;
+
+  createtab_stmt
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_bronze.branch ( branch_id INT, branch_country STRING, branch_city STRING, LastUpdatedTimeStamp TIMESTAMP, ingestion_timestamp TIMESTAMP, source_file_name STRING, pipeline_run_id STRING, load_id STRING, source_system STRING) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_bronze.claim;
+
+  createtab_stmt
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_bronze.claim ( claim_id INT, policy_id INT, date_of_claim TIMESTAMP, claim_amount DOUBLE, claim_status STRING, LastUpdatedTimeStamp TIMESTAMP, ingestion_timestamp TIMESTAMP, source_file_name STRING, pipeline_run_id STRING, load_id STRING, source_system STRING) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_bronze.customer;
+
+  createtab_stmt
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_bronze.customer ( customer_id INT, first_name STRING, last_name STRING, email STRING, phone BIGINT, country STRING, city STRING, registration_date TIMESTAMP, date_of_birth TIMESTAMP, gender STRING, ingestion_timestamp TIMESTAMP, source_file_name STRING, load_id STRING, pipeline_run_id STRING, source_system STRING, _ingestion_timestamp TIMESTAMP, _source_file_name STRING, _pipeline_run_id STRING) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
+
+In [0]:
+
+    %sql
+    SHOW CREATE TABLE dbw_insurance.insurance_bronze.policy;
+
+  createtab_stmt
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE dbw_insurance.insurance_bronze.policy ( _corrupt_record STRING, coverage_amount BIGINT, customer_id BIGINT, end_date STRING, policy_id BIGINT, policy_type STRING, premium BIGINT, start_date STRING, ingestion_timestamp TIMESTAMP, source_file_name STRING, pipeline_run_id STRING, load_id STRING, source_system STRING) USING delta TBLPROPERTIES ( 'delta.enableDeletionVectors' = 'true', 'delta.feature.appendOnly' = 'supported', 'delta.feature.deletionVectors' = 'supported', 'delta.feature.invariants' = 'supported', 'delta.minReaderVersion' = '3', 'delta.minWriterVersion' = '7', 'delta.parquet.compression.codec' = 'zstd')
