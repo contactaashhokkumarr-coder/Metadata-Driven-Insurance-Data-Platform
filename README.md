@@ -151,7 +151,7 @@ every run doesn't make sense.
 └── README.md
 ```
 
-*(Adjust paths above to match your actual repo layout before committing.)*
+*(Open Notebooks can be added with additional changes based on new tables introduced into pipeline)*
 
 ---
 
