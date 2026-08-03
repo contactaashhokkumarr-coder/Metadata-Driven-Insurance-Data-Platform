@@ -1,6 +1,0 @@
-selected resource name:		Updated_PL_Master_Insurance_IcrementaL
-selected resource type:		pipeline
-factory name:			ADF-Insurance-Dev3
-factory location:		eastus
-subscription id:		e827bbfe-1c3e-40ee-837c-a5166d3d7b97
-time of download (UTC):		Fri, 31 Jul 2026 18:33:40 GMT
